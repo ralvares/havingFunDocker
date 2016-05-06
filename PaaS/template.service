@@ -1,0 +1,18 @@
+[Unit]
+Description=DEMO - PaaS - %i
+After=docker.service
+Requires=docker.service
+
+[Service]
+Environment=scale=3
+Type=oneshot
+RemainAfterExit=yes
+TimeoutStartSec=0
+ExecStartPre=-/usr/bin/bash -c "for i in `seq 1 $scale | tac`; do /usr/bin/docker kill %i_$i; done"
+ExecStartPre=-/usr/bin/bash -c "for i in `seq 1 $scale | tac`; do /usr/bin/docker rm %i_$i; done"
+ExecStart=/usr/bin/bash -c "for i in `seq 1 $scale | tac`; do /usr/bin/docker run -d --name=%i_$i -P -v /deploy/php/%i:/var/www/html/ -e VIRTUAL_HOST=%i standalone_php; done"
+ExecStop=/usr/bin/bash -c "for i in `seq 1 $scale | tac`; do /usr/bin/docker kill %i_$i; done"
+ExecStop=/usr/bin/bash -c "for i in `seq 1 $scale | tac`; do /usr/bin/docker rm %i_$i; done"
+
+[Install]
+WantedBy=multi-user.target

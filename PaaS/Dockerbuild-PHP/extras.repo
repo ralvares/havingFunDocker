@@ -1,0 +1,12 @@
+[Extras]
+metadata_expire = 1
+sslclientcert = /etc/pki/entitlement/7016638797933010365.pem
+baseurl = http://satellite6/pulp/repos/DATASUS/Library/custom/Extras/Extras 
+ui_repoid_vars = releasever basearch
+sslverify = 1
+name = Extras 
+sslclientkey = /etc/pki/entitlement/7016638797933010365-key.pem
+gpgkey = file:///etc/pki/rpm-gpg/RPM-GPG-KEY-redhat-release
+enabled = 1
+sslcacert = /etc/rhsm/ca/katello-server-ca.pem
+gpgcheck = 0

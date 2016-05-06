@@ -1,0 +1,17 @@
+[Unit]
+Description=NGINX PROXY
+After=docker.service
+Requires=docker.service
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+TimeoutStartSec=0
+ExecStartPre=-/usr/bin/docker kill nginx-proxy 
+ExecStartPre=-/usr/bin/docker rm nginx-proxy
+ExecStart=/usr/bin/docker run -d -p 80:80 --name=nginx-proxy -v /var/run/docker.sock:/tmp/docker.sock:ro jwilder/nginx-proxy 
+ExecStop=/usr/bin/docker kill nginx-proxy
+ExecStop=/usr/bin/docker rm nginx-proxy
+
+[Install]
+WantedBy=multi-user.target
